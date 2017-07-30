@@ -10,12 +10,12 @@ sys.path.append("../tools/")
 from feature_format import featureFormat, targetFeatureSplit
 from tester import dump_classifier_and_data
 
-from poi_functions import showBoxPlot, printOutliers
+from poi_functions import showBoxPlot, printOutliers, printGeneralInfo
 
 ### Task 1: Select what features you'll use.
 ### features_list is a list of strings, each of which is a feature name.
 ### The first feature must be "poi".
-features_list = ['poi','salary', 'bonus'] # You will need to use more features
+features_list = ['poi', 'salary', 'bonus', 'total_payments'] # You will need to use more features
 
 ### Load the dictionary containing the dataset
 with open("final_project_dataset.pkl", "r") as data_file:
@@ -24,17 +24,21 @@ with open("final_project_dataset.pkl", "r") as data_file:
 ### Task 2: Remove outliers
 data_dict.pop( 'TOTAL', 0 )
 
+printGeneralInfo(data_dict, features_list)
 ### Task 3: Create new feature(s)
 
 ### Store to my_dataset for easy export below.
 my_dataset = data_dict
 data = featureFormat(my_dataset, features_list)
 
-showBoxPlot(data, 1, "Salary Box Plot")
-printOutliers(data, data_dict, 1, 5, 5, "salary")
+# showBoxPlot(data, 1, "Salary Box Plot")
+# printOutliers(data, data_dict, 1, 5, 5, "salary")
 
-showBoxPlot(data, 2, "Bonus Box Plot")
-printOutliers(data, data_dict, 2, 5, 5, "bonus")
+# showBoxPlot(data, 2, "Bonus Box Plot")
+# printOutliers(data, data_dict, 2, 5, 5, "bonus")
+
+# showBoxPlot(data, 3, "Total Payments Box Plot")
+# printOutliers(data, data_dict, 3, 5, 5, "total_payments")
 
 
 

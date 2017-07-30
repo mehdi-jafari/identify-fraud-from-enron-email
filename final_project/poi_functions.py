@@ -20,10 +20,37 @@ def showBoxPlot(data, featurId, title):
 	plt.title(title)
 	plt.show()
 
+def printGeneralInfo(data_dict , features_list):	
+	numberOfPOI = 0
+
+	NaN_values = {}
+	for feature in features_list:
+		NaN_values[feature] = 0
+			
+	for key in data_dict:
+	    for feature in data_dict[key]:
+	    	if feature == 'poi' and data_dict[key]['poi'] == True:
+	    		numberOfPOI+=1
+
+	    	if feature in features_list and data_dict[key][feature] == "NaN":	    		
+	    		NaN_values[feature] += 1
+	
+	print ' the dataset has  ' + str(len(data_dict)) + ' endpoints '
+	print ' number of Person of Intrest in the dataset is ' + str(numberOfPOI)
+	print  ' selected features ( '+ str(len(features_list)) +' ) are the following : ' + str(features_list).translate(None, "'")
+	
+
+	print ' there are ' + str(len(data_dict[data_dict.keys()[0]].keys())) +' features available in the dataset'
+
+	for feature in NaN_values:
+		print "number of NAN for " + feature  + " : "  + str(NaN_values[feature])
+
+
 def showScatterPlot(data, featurId, title):
 	plt.boxplot( data[:,featurId] )
 	plt.title(title)
 	plt.show()
+
 
 def printOutliers(data, data_dict, featurId, topElements , bottomElements, featurName):
 	
