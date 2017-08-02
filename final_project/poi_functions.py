@@ -10,17 +10,20 @@ sys.path.append("../tools/")
 from feature_format import featureFormat, targetFeatureSplit
 from tester import dump_classifier_and_data
 
+def scatterPlot(data_dict, features, title):
+	data = featureFormat(data_dict, features)
 
-def removeOutliers():
-	print 'gg'
-
-
-def showBoxPlot(data, featurId, title):
-	plt.boxplot( data[:,featurId] )
+	for datapoint in data:
+		x = datapoint[0]
+		y = datapoint[1]
+		plt.scatter( x, y)
+	
+	plt.xlabel(features[0])
+	plt.ylabel(features[1])
 	plt.title(title)
 	plt.show()
 
-def printGeneralInfo(data_dict , features_list):	
+def getGeneralInfo(data_dict , features_list):	
 	numberOfPOI = 0
 
 	NaN_values = {}
@@ -35,38 +38,42 @@ def printGeneralInfo(data_dict , features_list):
 	    	if feature in features_list and data_dict[key][feature] == "NaN":	    		
 	    		NaN_values[feature] += 1
 	
-	print ' the dataset has  ' + str(len(data_dict)) + ' endpoints '
-	print ' number of Person of Intrest in the dataset is ' + str(numberOfPOI)
-	print  ' selected features ( '+ str(len(features_list)) +' ) are the following : ' + str(features_list).translate(None, "'")
-	
-
-	print ' there are ' + str(len(data_dict[data_dict.keys()[0]].keys())) +' features available in the dataset'
+	print 'There are {} features available in the dataset'.format(len(data_dict[data_dict.keys()[0]].keys()))
+	print 'Selected features ({}) are {} '.format(len(features_list), str(features_list).translate(None, "'"))
+	print 'The dataset has {}  data points'.format(len(data_dict))
+	print 'There are {} POI in the dataset'.format(numberOfPOI)	
 
 	for feature in NaN_values:
-		print "number of NAN for " + feature  + " : "  + str(NaN_values[feature])
+		print 'There are {} missing values in {} feature.'.format(str(NaN_values[feature]), feature)
 
-
-def showScatterPlot(data, featurId, title):
-	plt.boxplot( data[:,featurId] )
-	plt.title(title)
-	plt.show()
-
-
-def printOutliers(data, data_dict, featurId, topElements , bottomElements, featurName):
+def findDatapointsWithAllNanValues(data_dict , features_list , print_title):	
 	
-	print '------------------------------- Feature ' + featurName + '----------------------------------------'
+	result = {}
 
-	test = data[:,featurId]
-	test[::-1].sort()	
-	topElements =  test[0:topElements]	
-	bottomElements = test[len(test)-bottomElements-1 : len(test)-1]
-	# print test
-	topElements = np.unique(topElements)
-	bottomElements = np.unique(bottomElements)
+	for key in data_dict:
+		result[key] = 0
+		for feature in features_list :
+			if data_dict[key][feature] == "NaN" :
+				result[key] += 1
+	filtered_dict = {k for (k,v) in result.items() if v == len(features_list)}
 
-	# print type(bottomElements)
-	# print bottomElements
+	print print_title
+	print filtered_dict
+	#print result
 
+def printOutliers(data_dict, featurName, topElements):
+	
+	data = featureFormat(data_dict, [featurName])
+	# print type(data)
+	# print data
+	print '------------------------------- Feature {} ----------------------------------------'.format(featurName)
+	
+
+	data[::-1].sort(axis=0)	
+	# print data
+
+	topElements =  data[0:topElements]
+	
 	actualItems = []
 	NaNItems = []
 	for key in data_dict:
@@ -76,17 +83,4 @@ def printOutliers(data, data_dict, featurId, topElements , bottomElements, featu
 			NaNItems.append(key)
 	
 	print 'Top ' + featurName 
-	print actualItems
-
-	actualItems = []
-
-	for key in data_dict:
-		# print data_dict[key][featurName]
-		if data_dict[key][featurName] in bottomElements:
-			actualItems.append((key, float(data_dict[key][featurName])))
-
-	print 'Bottom ' + featurName
-	print actualItems
-
-	print  featurName + ' feature has '+ str(len(NaNItems)) + ' NaN values'
-	print '-----------------------------------------------------------------------' 
+	print actualItems	
