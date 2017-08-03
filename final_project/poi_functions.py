@@ -4,11 +4,11 @@ import sys
 import pickle
 import numpy as np
 import matplotlib.pyplot as plt
-
 sys.path.append("../tools/")
-
 from feature_format import featureFormat, targetFeatureSplit
 from tester import dump_classifier_and_data
+from sklearn.feature_selection import VarianceThreshold
+
 
 def scatterPlot(data_dict, features, title):
 	data = featureFormat(data_dict, features)
@@ -61,8 +61,7 @@ def findDatapointsWithAllNanValues(data_dict , features_list , print_title):
 	print filtered_dict
 	#print result
 
-def printOutliers(data_dict, featurName, topElements):
-	
+def printOutliers(data_dict, featurName, topElements):	
 	data = featureFormat(data_dict, [featurName])
 	# print type(data)
 	# print data
@@ -83,4 +82,41 @@ def printOutliers(data_dict, featurName, topElements):
 			NaNItems.append(key)
 	
 	print 'Top ' + featurName 
-	print actualItems	
+	print actualItems
+
+def createNewFeatures(data_dict, feature_combination):
+	for outputFeature, value in feature_combination.items():
+		first_feature = value[0]
+		second_feature = value[1]		
+		for key in data_dict:
+			if data_dict[key][first_feature] == "NaN" or data_dict[key][second_feature] == "NaN" or data_dict[key][second_feature] == 0:
+				data_dict[key][outputFeature] = "NaN"
+			else:
+				data_dict[key][outputFeature] = float(data_dict[key][first_feature])/float(data_dict[key][second_feature])
+
+
+	return data_dict
+
+def get_best_features(labels, features, features_list):
+	
+	from sklearn.feature_selection import VarianceThreshold, f_classif, SelectKBest
+
+	selector = VarianceThreshold(threshold=(.8 * (1 - .8)))
+	features = selector.fit_transform(features)
+
+	print 'univariate features'
+
+	print features
+
+	k = 10
+	selector = SelectKBest(f_classif, k=10)
+	selector.fit_transform(features, labels)
+	print "Best features"
+	scores = zip(features_list[1:],selector.scores_)
+	sorted_scores = sorted(scores, key = lambda x: x[1], reverse=True)
+	print sorted_scores
+	optimized_features_list = ['poi'] + list(map(lambda x: x[0], sorted_scores))[0:k]
+	
+	print(optimized_features_list)
+
+	return features

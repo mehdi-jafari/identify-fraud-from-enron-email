@@ -10,11 +10,12 @@ sys.path.append("../tools/")
 from feature_format import featureFormat, targetFeatureSplit
 from tester import dump_classifier_and_data
 
-from poi_functions import getGeneralInfo, findDatapointsWithAllNanValues, scatterPlot, printOutliers
+from poi_functions import getGeneralInfo, findDatapointsWithAllNanValues, scatterPlot, printOutliers, createNewFeatures, get_best_features
 
 ### Task 1: Select what features you'll use.
 ### features_list is a list of strings, each of which is a feature name.
 ### The first feature must be "poi".
+
 financial_features = ['salary', 'bonus', 'total_payments', 'expenses' ,'deferred_income' , 'total_stock_value', 'restricted_stock']
 email_features = ['to_messages', 'from_poi_to_this_person', 'from_messages', 'from_this_person_to_poi', 'shared_receipt_with_poi']
 features_list = ['poi'] + financial_features + email_features # You will need to use more features
@@ -25,11 +26,11 @@ with open("final_project_dataset.pkl", "r") as data_file:
 
 #getGeneralInfo(data_dict, features_list)
 
-# findDatapointsWithAllNanValues(data_dict, financial_features, "List of people with all missing financial feature")
+#findDatapointsWithAllNanValues(data_dict, financial_features, "List of people with all missing financial feature")
 #print data_dict['LOCKHART EUGENE E']
 
-# findDatapointsWithAllNanValues(data_dict, email_features, "List of people with all missing Email feature")
-# print data_dict["THE TRAVEL AGENCY IN THE PARK"]
+#findDatapointsWithAllNanValues(data_dict, email_features, "List of people with all missing Email feature")
+#print data_dict["THE TRAVEL AGENCY IN THE PARK"]
 
 ### Task 2: Remove outliers
 # "TOTAL" data point is clearly an outlier
@@ -38,53 +39,45 @@ data_dict.pop( 'TOTAL', 0 )
 data_dict.pop( 'LOCKHART EUGENE E', 0 )
 # it's not a personand by checking the endpoint, it has almost all missing financial features and  all Email features missing  
 data_dict.pop( 'THE TRAVEL AGENCY IN THE PARK', 0 )
-# as we can see in the diagram there might be few outliers
-scatterPlot(data_dict, ['total_payments', 'total_stock_value'] , " total_payments and total_stock_value")
-# we can get the datapoint that has the biggest total payment and see if we should remove it from the dataset
-printOutliers(data_dict,"total_payments",1)
-printOutliers(data_dict,"total_stock_value",1)
-#data_dict.pop( 'LAY KENNETH L', 0 )
+
+#Finding outliers from plotting the distrbution
+
+# as we can see in the following diagrams there might be few outliers
 #scatterPlot(data_dict, ['total_payments', 'total_stock_value'] , " total_payments and total_stock_value")
+
+# we can get the datapoint that has the biggest total payment and see if we should remove it from the dataset
+#printOutliers(data_dict,"total_payments",1)
+#printOutliers(data_dict,"total_stock_value",1)
+#data_dict.pop( 'LAY KENNETH L', 0 )
+
+# scatterPlot(data_dict, ['total_payments', 'total_stock_value'] , " total_payments and total_stock_value")
 
 # scatterPlot(data_dict, ['from_poi_to_this_person', 'from_this_person_to_poi'] , " from_poi_to_this_person and from_this_person_to_poi")
 # scatterPlot(data_dict, ['salary', 'bonus'] ," salary and bonus" )
 
+# end Finding with plotting
 
 
 
 ### Task 3: Create new feature(s)
 
+new_feature_combinations = {'from_this_person_to_poi_ratio': ['from_messages', 'from_this_person_to_poi'] ,
+							'from_poi_to_this_person_ratio': ['to_messages', 'from_poi_to_this_person'] ,
+							'bonus_ratio': ['bonus', 'total_payments']
+							}
+
+features_list = features_list + ['from_this_person_to_poi_ratio', 'from_poi_to_this_person_ratio', 'bonus_ratio']
+
+my_dataset = createNewFeatures(data_dict, new_feature_combinations)
+
 ### Store to my_dataset for easy export below.
-my_dataset = data_dict
-data = featureFormat(my_dataset, features_list)
-
-# showBoxPlot(data, 1, "Salary Box Plot")
-# printOutliers(data, data_dict, 1, 5, 5, "salary")
-
-# showBoxPlot(data, 2, "Bonus Box Plot")
-# printOutliers(data, data_dict, 2, 5, 5, "bonus")
-
-# showBoxPlot(data, 3, "Total Payments Box Plot")
-# printOutliers(data, data_dict, 3, 5, 5, "total_payments")
-
-
-
-# showBoxPlot(data, 2, "Bonus Box Plot")
-# printOutliers(data, 2, 5, 5, "bonus")
-
-# test = []
-# for key in data_dict:
-# 	if data_dict[key]['salary'] != "NaN" and data_dict[key]['bonus'] != "NaN":
-# 		test.append((key, float(data_dict[key]['salary']) * float(data_dict[key]['bonus'])))
-
-# test.sort(key=lambda tup: tup[1])
-# print test
-
 
 ### Extract features and labels from dataset for local testing
 data = featureFormat(my_dataset, features_list, sort_keys = True)
 labels, features = targetFeatureSplit(data)
 
+
+get_best_features(labels, features, features_list)
 ### Task 4: Try a varity of classifiers
 ### Please name your classifier clf for easy export below.
 ### Note that if you want to do PCA or other multi-stage operations,
