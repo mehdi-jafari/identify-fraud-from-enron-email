@@ -6,8 +6,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 sys.path.append("../tools/")
 from feature_format import featureFormat, targetFeatureSplit
-from tester import dump_classifier_and_data
+from tester import dump_classifier_and_data, test_classifier
 from sklearn.feature_selection import VarianceThreshold
+from sklearn.cross_validation import train_test_split
 
 
 def scatterPlot(data_dict, features, title):
@@ -117,6 +118,39 @@ def get_best_features(labels, features, features_list):
 	print sorted_scores
 	optimized_features_list = ['poi'] + list(map(lambda x: x[0], sorted_scores))[0:k]
 	
-	print(optimized_features_list)
+	# print(optimized_features_list)
 
-	return features
+	return optimized_features_list
+
+def clf_naive_bayes(dataset, features_list):
+	print '****************************************naive_bayes***************************'
+	from sklearn.naive_bayes import GaussianNB
+	clf = GaussianNB()
+	test_classifier(clf, dataset, features_list, folds = 1000)
+	print '****************************************naive_bayes***************************'
+	
+def clf_decisionTree(dataset, features_list):
+	print '****************************************decisionTree***************************'
+	from sklearn import tree
+	clf = tree.DecisionTreeClassifier()
+	test_classifier(clf, dataset, features_list, folds = 1000)	
+	print '****************************************decisionTree***************************'
+
+def clf_KNeighbors(dataset, features_list):
+	print '****************************************KNeighbors***************************'
+	from sklearn.neighbors import KNeighborsClassifier
+
+	clf = KNeighborsClassifier()
+	test_classifier(clf, dataset, features_list, folds = 1000)
+
+	print '****************************************KNeighbors***************************'
+
+def clf_best_params_KNeighbors(dataset, features_list):
+	print '****************************************Tunned KNeighbors***************************'
+	
+	# based on grid search n_neighbors =1 and  algorithm='ball_tree' gives the best result
+	from sklearn.neighbors import KNeighborsClassifier	
+	clf = KNeighborsClassifier(n_neighbors=1, algorithm='ball_tree')
+	test_classifier(clf, dataset, features_list, folds = 1000)	
+	
+	print '****************************************Tunned KNeighbors***************************'

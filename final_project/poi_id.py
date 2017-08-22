@@ -8,9 +8,10 @@ import math
 sys.path.append("../tools/")
 
 from feature_format import featureFormat, targetFeatureSplit
-from tester import dump_classifier_and_data
+from tester import dump_classifier_and_data, test_classifier
 
-from poi_functions import getGeneralInfo, findDatapointsWithAllNanValues, scatterPlot, printOutliers, createNewFeatures, get_best_features
+from poi_functions import getGeneralInfo, findDatapointsWithAllNanValues, scatterPlot, printOutliers, \
+createNewFeatures, get_best_features, clf_naive_bayes, clf_decisionTree, clf_KNeighbors, clf_best_params_KNeighbors
 
 ### Task 1: Select what features you'll use.
 ### features_list is a list of strings, each of which is a feature name.
@@ -77,7 +78,7 @@ data = featureFormat(my_dataset, features_list, sort_keys = True)
 labels, features = targetFeatureSplit(data)
 
 
-get_best_features(labels, features, features_list)
+selected_featureList = get_best_features(labels, features, features_list)
 ### Task 4: Try a varity of classifiers
 ### Please name your classifier clf for easy export below.
 ### Note that if you want to do PCA or other multi-stage operations,
@@ -85,8 +86,15 @@ get_best_features(labels, features, features_list)
 ### http://scikit-learn.org/stable/modules/pipeline.html
 
 # Provided to give you a starting point. Try a variety of classifiers.
-from sklearn.naive_bayes import GaussianNB
-clf = GaussianNB()
+clf_naive_bayes(my_dataset, features_list)
+clf_naive_bayes(my_dataset, selected_featureList)
+
+clf_decisionTree(my_dataset, features_list)
+clf_decisionTree(my_dataset, selected_featureList)
+
+clf_KNeighbors(my_dataset, features_list)
+clf_KNeighbors(my_dataset, selected_featureList)
+
 
 ### Task 5: Tune your classifier to achieve better than .3 precision and recall 
 ### using our testing script. Check the tester.py script in the final project
@@ -95,10 +103,12 @@ clf = GaussianNB()
 ### stratified shuffle split cross validation. For more info: 
 ### http://scikit-learn.org/stable/modules/generated/sklearn.cross_validation.StratifiedShuffleSplit.html
 
-# Example starting point. Try investigating other evaluation techniques!
-from sklearn.cross_validation import train_test_split
-features_train, features_test, labels_train, labels_test = \
-    train_test_split(features, labels, test_size=0.3, random_state=42)
+clf_best_params_KNeighbors(my_dataset, selected_featureList)
+
+
+from sklearn.naive_bayes import GaussianNB
+clf = GaussianNB()
+test_classifier(clf, my_dataset, features_list)
 
 ### Task 6: Dump your classifier, dataset, and features_list so anyone can
 ### check your results. You do not need to change anything below, but make sure
