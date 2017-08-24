@@ -11,7 +11,7 @@ from feature_format import featureFormat, targetFeatureSplit
 from tester import dump_classifier_and_data, test_classifier
 
 from poi_functions import getGeneralInfo, findDatapointsWithAllNanValues, scatterPlot, printOutliers, \
-createNewFeatures, get_best_features, clf_naive_bayes, clf_decisionTree, clf_KNeighbors, clf_best_params_KNeighbors
+createNewFeatures, remove_low_variant_features, clf_naive_bayes, clf_decisionTree, clf_KNeighbors, clf_best_params_KNeighbors
 
 ### Task 1: Select what features you'll use.
 ### features_list is a list of strings, each of which is a feature name.
@@ -25,7 +25,7 @@ features_list = ['poi'] + financial_features + email_features # You will need to
 with open("final_project_dataset.pkl", "r") as data_file:
     data_dict = pickle.load(data_file)
 
-#getGeneralInfo(data_dict, features_list)
+getGeneralInfo(data_dict, features_list)
 
 #findDatapointsWithAllNanValues(data_dict, financial_features, "List of people with all missing financial feature")
 #print data_dict['LOCKHART EUGENE E']
@@ -78,7 +78,7 @@ data = featureFormat(my_dataset, features_list, sort_keys = True)
 labels, features = targetFeatureSplit(data)
 
 
-selected_featureList = get_best_features(labels, features, features_list)
+selected_featureList = ['poi'] + remove_low_variant_features(labels, features, features_list)
 ### Task 4: Try a varity of classifiers
 ### Please name your classifier clf for easy export below.
 ### Note that if you want to do PCA or other multi-stage operations,
@@ -103,6 +103,7 @@ clf_KNeighbors(my_dataset, selected_featureList)
 ### stratified shuffle split cross validation. For more info: 
 ### http://scikit-learn.org/stable/modules/generated/sklearn.cross_validation.StratifiedShuffleSplit.html
 
+clf_best_params_KNeighbors(my_dataset, features_list)
 clf_best_params_KNeighbors(my_dataset, selected_featureList)
 
 

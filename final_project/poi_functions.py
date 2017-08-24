@@ -98,29 +98,26 @@ def createNewFeatures(data_dict, feature_combination):
 
 	return data_dict
 
-def get_best_features(labels, features, features_list):
-	
+def remove_low_variant_features(labels, features, features_list):
+
 	from sklearn.feature_selection import VarianceThreshold, f_classif, SelectKBest
+	threshold = .8 * (1 - .8)
+	vt = VarianceThreshold(threshold=threshold)
+	features = vt.fit_transform(features)
 
-	selector = VarianceThreshold(threshold=(.8 * (1 - .8)))
-	features = selector.fit_transform(features)
-
-	print 'univariate features'
-
-	print features
-
-	k = 10
-	selector = SelectKBest(f_classif, k=10)
-	selector.fit_transform(features, labels)
-	print "Best features"
-	scores = zip(features_list[1:],selector.scores_)
-	sorted_scores = sorted(scores, key = lambda x: x[1], reverse=True)
-	print sorted_scores
-	optimized_features_list = ['poi'] + list(map(lambda x: x[0], sorted_scores))[0:k]
+	#print vt.variances_
 	
-	# print(optimized_features_list)
-
-	return optimized_features_list
+	k = 10
+	vt = SelectKBest(f_classif, k=10)
+	vt.fit_transform(features, labels)
+	
+	scores = zip(features_list[1:],vt.scores_)
+	sorted_scores = sorted(scores, key = lambda x: x[1], reverse=True)
+	
+	selected_features = list(map(lambda x: x[0], sorted_scores))[0:k]	
+	
+	print selected_features
+	return selected_features
 
 def clf_naive_bayes(dataset, features_list):
 	print '****************************************naive_bayes***************************'
