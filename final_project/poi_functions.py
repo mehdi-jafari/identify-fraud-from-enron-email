@@ -114,6 +114,7 @@ def remove_low_variant_features(labels, features, features_list):
 	scores = zip(features_list[1:],vt.scores_)
 	sorted_scores = sorted(scores, key = lambda x: x[1], reverse=True)
 	
+	print sorted_scores
 	selected_features = list(map(lambda x: x[0], sorted_scores))[0:k]	
 	
 	print selected_features

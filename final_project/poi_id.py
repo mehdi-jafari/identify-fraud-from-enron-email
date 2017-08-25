@@ -17,7 +17,13 @@ createNewFeatures, remove_low_variant_features, clf_naive_bayes, clf_decisionTre
 ### features_list is a list of strings, each of which is a feature name.
 ### The first feature must be "poi".
 
-financial_features = ['salary', 'bonus', 'total_payments', 'expenses' ,'deferred_income' , 'total_stock_value', 'restricted_stock']
+all_features = ['salary', 'deferral_payments', 'total_payments', 'loan_advances', 'bonus', 'restricted_stock_deferred', 'deferred_income', 
+'total_stock_value', 'expenses', 'exercised_stock_options', 'other', 'long_term_incentive', 'restricted_stock', 'director_fees',
+'to_messages', 'email_address', 'from_poi_to_this_person', 'from_messages', 'from_this_person_to_poi', 'poi', 'shared_receipt_with_poi']
+
+financial_features = ['salary', 'deferral_payments', 'total_payments', 'loan_advances', 'bonus', 'restricted_stock_deferred', 'deferred_income', 
+'total_stock_value', 'expenses', 'exercised_stock_options', 'other', 'long_term_incentive', 'restricted_stock', 'director_fees']
+
 email_features = ['to_messages', 'from_poi_to_this_person', 'from_messages', 'from_this_person_to_poi', 'shared_receipt_with_poi']
 features_list = ['poi'] + financial_features + email_features # You will need to use more features
 
@@ -25,7 +31,7 @@ features_list = ['poi'] + financial_features + email_features # You will need to
 with open("final_project_dataset.pkl", "r") as data_file:
     data_dict = pickle.load(data_file)
 
-getGeneralInfo(data_dict, features_list)
+getGeneralInfo(data_dict, all_features)
 
 #findDatapointsWithAllNanValues(data_dict, financial_features, "List of people with all missing financial feature")
 #print data_dict['LOCKHART EUGENE E']
@@ -86,13 +92,10 @@ selected_featureList = ['poi'] + remove_low_variant_features(labels, features, f
 ### http://scikit-learn.org/stable/modules/pipeline.html
 
 # Provided to give you a starting point. Try a variety of classifiers.
-clf_naive_bayes(my_dataset, features_list)
 clf_naive_bayes(my_dataset, selected_featureList)
 
-clf_decisionTree(my_dataset, features_list)
 clf_decisionTree(my_dataset, selected_featureList)
 
-clf_KNeighbors(my_dataset, features_list)
 clf_KNeighbors(my_dataset, selected_featureList)
 
 
@@ -103,7 +106,7 @@ clf_KNeighbors(my_dataset, selected_featureList)
 ### stratified shuffle split cross validation. For more info: 
 ### http://scikit-learn.org/stable/modules/generated/sklearn.cross_validation.StratifiedShuffleSplit.html
 
-clf_best_params_KNeighbors(my_dataset, features_list)
+# clf_best_params_KNeighbors(my_dataset, features_list)
 clf_best_params_KNeighbors(my_dataset, selected_featureList)
 
 
