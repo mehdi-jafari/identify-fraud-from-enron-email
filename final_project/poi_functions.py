@@ -121,21 +121,21 @@ def remove_low_variant_features(labels, features, features_list):
 	return selected_features
 
 def clf_naive_bayes(dataset, features_list):
-	print '****************************************naive_bayes***************************'
+	print '****************************************START naive_bayes***************************'
 	from sklearn.naive_bayes import GaussianNB
 	clf = GaussianNB()
 	test_classifier(clf, dataset, features_list, folds = 1000)
 	print '****************************************naive_bayes***************************'
 	
 def clf_decisionTree(dataset, features_list):
-	print '****************************************decisionTree***************************'
+	print '****************************************START decisionTree***************************'
 	from sklearn import tree
 	clf = tree.DecisionTreeClassifier()
 	test_classifier(clf, dataset, features_list, folds = 1000)	
 	print '****************************************decisionTree***************************'
 
 def clf_KNeighbors(dataset, features_list):
-	print '****************************************KNeighbors***************************'
+	print '****************************************START KNeighbors***************************'
 	from sklearn.neighbors import KNeighborsClassifier
 
 	clf = KNeighborsClassifier()
@@ -143,12 +143,56 @@ def clf_KNeighbors(dataset, features_list):
 
 	print '****************************************KNeighbors***************************'
 
+
 def clf_best_params_KNeighbors(dataset, features_list):
-	print '****************************************Tunned KNeighbors***************************'
+	print '****************************************START Tunned KNeighbors***************************'
 	
 	# based on grid search n_neighbors =1 and  algorithm='ball_tree' gives the best result
-	from sklearn.neighbors import KNeighborsClassifier	
-	clf = KNeighborsClassifier(n_neighbors=1, algorithm='ball_tree')
-	test_classifier(clf, dataset, features_list, folds = 1000)	
+	from sklearn.grid_search import GridSearchCV
+	from sklearn import neighbors
+	from sklearn.pipeline import Pipeline
+	from sklearn.preprocessing import StandardScaler
+	from sklearn import cross_validation
+	from time import time
+
+	startTime	  = time()
+	y       	  = np.sign(np.arange(-5.5,14))
+	nFolds 		  = 4
+	metrics       = ['minkowski','euclidean','manhattan'] 
+	weights       = ['uniform','distance']
+	numNeighbors  = np.arange(6,10)
+	algorithms 	  = ['ball_tree','kd_tree','brute','auto']
+	param_grid    = dict(knn__metric=metrics,knn__weights=weights,knn__n_neighbors=numNeighbors, knn__algorithm=algorithms)
+	cv           = cross_validation.StratifiedKFold(y,nFolds)
+	grid = GridSearchCV(Pipeline([('scale', StandardScaler()), ('knn', neighbors.KNeighborsClassifier())]), param_grid=param_grid, scoring='recall', cv=cv)
+
+	test_classifier(grid, dataset, features_list)
+	print 'Tuning of KNN parameters took {} seconds with these parameters {} '.format(round(time()-startTime, 3), grid.best_params_)
 	
-	print '****************************************Tunned KNeighbors***************************'
+	print '****************************************END Tunned KNeighbors***************************'
+
+def clf_best_params_DecisionTree(dataset, features_list):
+	print '****************************************START Tunned DecisionTree***************************'
+	
+	# based on grid search n_neighbors =1 and  algorithm='ball_tree' gives the best result
+	from sklearn.grid_search import GridSearchCV
+	from sklearn import tree
+	from time import time
+	from sklearn import cross_validation
+
+	startTime	 = time()
+	y       	 = np.sign(np.arange(-5.5,14))
+	nFolds 		 = 4
+	criterions   = ['gini', 'entropy'] 
+	splitters    = ['best','random']
+	n_estimators = [50, 100, 150, 200]
+	max_depths 	 = [2, 4, 6, 8]
+	min_splits   = [10, 20, 40]
+	param_grid   = dict(max_depth = max_depths, min_samples_split = min_splits)
+	cv           = cross_validation.StratifiedKFold(y,nFolds)
+	grid 		 = GridSearchCV(tree.DecisionTreeClassifier(),param_grid=param_grid, scoring='recall', cv=cv)
+
+	test_classifier(grid, dataset, features_list)
+	print 'Tuning of DecisionTree parameters took {} seconds with these parameters {}'.format(round(time()-startTime, 3), grid.best_params_)
+	
+	print '****************************************END Tunned DecisionTree***************************'	

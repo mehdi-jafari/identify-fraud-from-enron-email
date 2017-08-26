@@ -11,7 +11,8 @@ from feature_format import featureFormat, targetFeatureSplit
 from tester import dump_classifier_and_data, test_classifier
 
 from poi_functions import getGeneralInfo, findDatapointsWithAllNanValues, scatterPlot, printOutliers, \
-createNewFeatures, remove_low_variant_features, clf_naive_bayes, clf_decisionTree, clf_KNeighbors, clf_best_params_KNeighbors
+createNewFeatures, remove_low_variant_features, clf_naive_bayes, clf_decisionTree, clf_KNeighbors,\
+ clf_best_params_KNeighbors, clf_best_params_DecisionTree
 
 ### Task 1: Select what features you'll use.
 ### features_list is a list of strings, each of which is a feature name.
@@ -92,11 +93,11 @@ selected_featureList = ['poi'] + remove_low_variant_features(labels, features, f
 ### http://scikit-learn.org/stable/modules/pipeline.html
 
 # Provided to give you a starting point. Try a variety of classifiers.
-clf_naive_bayes(my_dataset, selected_featureList)
+# clf_naive_bayes(my_dataset, selected_featureList)
 
-clf_decisionTree(my_dataset, selected_featureList)
+# clf_decisionTree(my_dataset, selected_featureList)
 
-clf_KNeighbors(my_dataset, selected_featureList)
+# clf_KNeighbors(my_dataset, selected_featureList)
 
 
 ### Task 5: Tune your classifier to achieve better than .3 precision and recall 
@@ -108,6 +109,7 @@ clf_KNeighbors(my_dataset, selected_featureList)
 
 # clf_best_params_KNeighbors(my_dataset, features_list)
 clf_best_params_KNeighbors(my_dataset, selected_featureList)
+clf_best_params_DecisionTree(my_dataset, selected_featureList)
 
 
 from sklearn.naive_bayes import GaussianNB
