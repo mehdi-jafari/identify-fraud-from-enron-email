@@ -82,7 +82,7 @@ I used SelectKBest algorithm to score the features and select the top 6 features
  Here are the selected features:
 ['exercised_stock_options', 'total_stock_value', 'bonus', 'bonus_ratio', 'salary', 'deferred_income', 'long_term_incentive', 'restricted_stock', 'total_payments', 'shared_receipt_with_poi', 'poi']
 
-![number of K-Best Features plot ](figure_1.png)
+![number of K-Best Features plot ](final_project\figure_1.png)
 
 As we can see in the list only one of the three engnineerd features (bonus_ratio) is in the top 10 list.
 
