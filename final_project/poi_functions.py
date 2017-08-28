@@ -98,6 +98,114 @@ def createNewFeatures(data_dict, feature_combination):
 
 	return data_dict
 
+def find_the_best_k_number_of_features(dataset, labels, features, features_list):
+	result_accuracy = {}
+	result_precision = {}
+	result_recall = {}
+	for k in xrange(1,10):
+		print '****************************************START naive_bayes With {} features ***************************'.format(k)
+		test_features = remove_low_variant_features(labels, features, features_list , k)
+		test_features = ['poi'] + test_features
+		print test_features
+		from sklearn.naive_bayes import GaussianNB
+		clf = GaussianNB()
+		result = test_classifier(clf, dataset, test_features, folds = 1000)
+		print '****************************************END naive_bayes With {} features ***************************'.format(k)
+		result_accuracy[k] = result[0]
+		result_precision[k] = result[1]
+		result_recall[k] = result[2]
+
+
+	import matplotlib.pylab as plt
+	accuracy_lists = sorted(result_accuracy.items()) # sorted by key, return a list of tuples
+	x_a, y_a = zip(*accuracy_lists) # unpack a list of pairs into two tuples
+	plt.plot(x_a, y_a)
+
+	precision_lists = sorted(result_precision.items()) # sorted by key, return a list of tuples
+	x_p, y_p = zip(*precision_lists) # unpack a list of pairs into two tuples
+	plt.plot(x_p, y_p)
+
+	recall_lists = sorted(result_recall.items()) # sorted by key, return a list of tuples
+	x_r, y_r = zip(*recall_lists) # unpack a list of pairs into two tuples
+	plt.plot(x_r, y_r)
+	plt.legend(['Accuracy', 'Precision', 'Recall'], loc='upper left')
+	plt.show()
+	print 'ggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg'
+	print result_accuracy
+	print 'ggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg'
+
+		
+
+	# result = {}
+	# folds= 1000
+	# from sklearn.naive_bayes import GaussianNB
+	# from sklearn.cross_validation import StratifiedShuffleSplit
+	# print 'hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh'
+
+	# for k in xrange(5,10):
+	# 	print k
+	# 	# for feature in features_list_org:
+	# 	# 	# Replace 'NaN' with 0
+	# 	# 	for name in dataset:
+	# 	# 		data_point = dataset[name]
+	# 	# 	if not data_point[feature]:
+	# 	# 		data_point[feature] = 0
+	# 	# 	elif data_point[feature] == 'NaN':
+	# 	# 		data_point[feature] =0
+	# 	feature_list = []
+	# 	feature_list = remove_low_variant_features(labels, features, features_list_org , k)
+	# 	feature_list = ['poi'] + feature_list
+	# 	clf = GaussianNB()
+
+	# 	data = featureFormat(dataset, feature_list, sort_keys = True)
+	# 	labels, features = targetFeatureSplit(data)
+	# 	cv = StratifiedShuffleSplit(labels, folds, random_state = 42)
+	# 	true_negatives = 0
+	# 	false_negatives = 0
+	# 	true_positives = 0
+	# 	false_positives = 0
+	# 	for train_idx, test_idx in cv:
+	# 		features_train = []
+	# 		features_test  = []
+	# 		labels_train   = []
+	# 		labels_test    = []
+	# 		for ii in train_idx:
+	# 			features_train.append( features[ii] )
+	# 			labels_train.append( labels[ii] )
+	# 		for jj in test_idx:
+	# 			features_test.append( features[jj] )
+	# 			labels_test.append( labels[jj] )
+	# 		### fit the classifier using training set, and test on test set
+	#         clf.fit(features_train, labels_train)
+	#         predictions = clf.predict(features_test)
+	#         for prediction, truth in zip(predictions, labels_test):
+	#             if prediction == 0 and truth == 0:
+	#                 true_negatives += 1
+	#             elif prediction == 0 and truth == 1:
+	#                 false_negatives += 1
+	#             elif prediction == 1 and truth == 0:
+	#                 false_positives += 1
+	#             elif prediction == 1 and truth == 1:
+	#                 true_positives += 1
+	#             else:
+	#                 print "Warning: Found a predicted label not == 0 or 1."
+	#                 print "All predictions should take value 0 or 1."
+	#                 print "Evaluating performance for processed predictions:"
+	#                 break
+	# 	try:
+
+	# 		total_predictions = true_negatives + false_negatives + false_positives + true_positives
+	# 		accuracy = 1.0*(true_positives + true_negatives)/total_predictions
+	# 		precision = 1.0*true_positives/(true_positives+false_positives)
+	# 		recall = 1.0*true_positives/(true_positives+false_negatives)
+	# 		f1 = 2.0 * true_positives/(2*true_positives + false_positives+false_negatives)
+	# 		f2 = (1+2.0*2.0) * precision*recall/(4*precision + recall)
+	# 		result[k] = total_predictions
+	# 	except:
+	# 		print "Got a divide by zero when trying out:", clf
+	# 		print "Precision or recall may be undefined due to a lack of true positive predicitons."
+	# print result
+
 def remove_low_variant_features(labels, features, features_list , k):
 
 	from sklearn.feature_selection import VarianceThreshold, f_classif, SelectKBest

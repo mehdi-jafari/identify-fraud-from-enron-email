@@ -12,7 +12,7 @@ from tester import dump_classifier_and_data, test_classifier
 
 from poi_functions import getGeneralInfo, findDatapointsWithAllNanValues, scatterPlot, printOutliers, \
 createNewFeatures, remove_low_variant_features, clf_naive_bayes, clf_decisionTree, clf_KNeighbors,\
- clf_best_params_KNeighbors, clf_best_params_DecisionTree
+ clf_best_params_KNeighbors, clf_best_params_DecisionTree, find_the_best_k_number_of_features
 
 ### Task 1: Select what features you'll use.
 ### features_list is a list of strings, each of which is a feature name.
@@ -61,9 +61,9 @@ data_dict.pop( 'THE TRAVEL AGENCY IN THE PARK', 0 )
 #printOutliers(data_dict,"total_stock_value",1)
 #data_dict.pop( 'LAY KENNETH L', 0 )
 
-scatterPlot(data_dict, ['total_payments', 'total_stock_value'] , " total_payments and total_stock_value")
-scatterPlot(data_dict, ['from_poi_to_this_person', 'from_this_person_to_poi'] , " from_poi_to_this_person and from_this_person_to_poi")
-scatterPlot(data_dict, ['salary', 'bonus'] ," salary and bonus" )
+# scatterPlot(data_dict, ['total_payments', 'total_stock_value'] , " total_payments and total_stock_value")
+# scatterPlot(data_dict, ['from_poi_to_this_person', 'from_this_person_to_poi'] , " from_poi_to_this_person and from_this_person_to_poi")
+# scatterPlot(data_dict, ['salary', 'bonus'] ," salary and bonus" )
 
 # end Finding with plotting
 
@@ -86,8 +86,13 @@ my_dataset = createNewFeatures(data_dict, new_feature_combinations)
 data = featureFormat(my_dataset, features_list, sort_keys = True)
 labels, features = targetFeatureSplit(data)
 
+find_the_best_k_number_of_features(my_dataset, labels, features, features_list)
 
-selected_featureList = ['poi'] + remove_low_variant_features(labels, features, features_list)
+# selected_featureList = ['poi'] + remove_low_variant_features(labels, features, features_list, 5)
+# clf_naive_bayes(my_dataset, selected_featureList)
+
+# selected_featureList = ['poi'] + remove_low_variant_features(labels, features, features_list, 6)
+# clf_naive_bayes(my_dataset, selected_featureList)
 ### Task 4: Try a varity of classifiers
 ### Please name your classifier clf for easy export below.
 ### Note that if you want to do PCA or other multi-stage operations,
@@ -95,14 +100,14 @@ selected_featureList = ['poi'] + remove_low_variant_features(labels, features, f
 ### http://scikit-learn.org/stable/modules/pipeline.html
 
 # Provided to give you a starting point. Try a variety of classifiers.
-clf_naive_bayes(my_dataset, selected_featureList)
-clf_naive_bayes(my_dataset, all_features_test)
+# clf_naive_bayes(my_dataset, selected_featureList)
+# clf_naive_bayes(my_dataset, all_features_test)
 
-clf_decisionTree(my_dataset, selected_featureList)
-clf_decisionTree(my_dataset, all_features_test)
+# clf_decisionTree(my_dataset, selected_featureList)
+# clf_decisionTree(my_dataset, all_features_test)
 
-clf_KNeighbors(my_dataset, selected_featureList)
-clf_KNeighbors(my_dataset, all_features_test)
+# clf_KNeighbors(my_dataset, selected_featureList)
+# clf_KNeighbors(my_dataset, all_features_test)
 
 
 ### Task 5: Tune your classifier to achieve better than .3 precision and recall 
@@ -113,8 +118,8 @@ clf_KNeighbors(my_dataset, all_features_test)
 ### http://scikit-learn.org/stable/modules/generated/sklearn.cross_validation.StratifiedShuffleSplit.html
 
 # clf_best_params_KNeighbors(my_dataset, features_list)
-clf_best_params_KNeighbors(my_dataset, selected_featureList)
-clf_best_params_DecisionTree(my_dataset, selected_featureList)
+# clf_best_params_KNeighbors(my_dataset, selected_featureList)
+# clf_best_params_DecisionTree(my_dataset, selected_featureList)
 
 
 from sklearn.naive_bayes import GaussianNB
