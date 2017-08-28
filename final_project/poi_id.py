@@ -22,6 +22,9 @@ all_features = ['salary', 'deferral_payments', 'total_payments', 'loan_advances'
 'total_stock_value', 'expenses', 'exercised_stock_options', 'other', 'long_term_incentive', 'restricted_stock', 'director_fees',
 'to_messages', 'email_address', 'from_poi_to_this_person', 'from_messages', 'from_this_person_to_poi', 'poi', 'shared_receipt_with_poi']
 
+all_features_test = ['poi', 'salary', 'deferral_payments', 'total_payments', 'loan_advances', 'bonus', 'restricted_stock_deferred', 'deferred_income','total_stock_value', 'expenses', 'exercised_stock_options', 'other', 'long_term_incentive', 'restricted_stock', 'director_fees',
+'to_messages', 'from_poi_to_this_person', 'from_messages', 'from_this_person_to_poi', 'shared_receipt_with_poi']
+
 financial_features = ['salary', 'deferral_payments', 'total_payments', 'loan_advances', 'bonus', 'restricted_stock_deferred', 'deferred_income', 
 'total_stock_value', 'expenses', 'exercised_stock_options', 'other', 'long_term_incentive', 'restricted_stock', 'director_fees']
 
@@ -58,10 +61,9 @@ data_dict.pop( 'THE TRAVEL AGENCY IN THE PARK', 0 )
 #printOutliers(data_dict,"total_stock_value",1)
 #data_dict.pop( 'LAY KENNETH L', 0 )
 
-# scatterPlot(data_dict, ['total_payments', 'total_stock_value'] , " total_payments and total_stock_value")
-
-# scatterPlot(data_dict, ['from_poi_to_this_person', 'from_this_person_to_poi'] , " from_poi_to_this_person and from_this_person_to_poi")
-# scatterPlot(data_dict, ['salary', 'bonus'] ," salary and bonus" )
+scatterPlot(data_dict, ['total_payments', 'total_stock_value'] , " total_payments and total_stock_value")
+scatterPlot(data_dict, ['from_poi_to_this_person', 'from_this_person_to_poi'] , " from_poi_to_this_person and from_this_person_to_poi")
+scatterPlot(data_dict, ['salary', 'bonus'] ," salary and bonus" )
 
 # end Finding with plotting
 
@@ -93,11 +95,14 @@ selected_featureList = ['poi'] + remove_low_variant_features(labels, features, f
 ### http://scikit-learn.org/stable/modules/pipeline.html
 
 # Provided to give you a starting point. Try a variety of classifiers.
-# clf_naive_bayes(my_dataset, selected_featureList)
+clf_naive_bayes(my_dataset, selected_featureList)
+clf_naive_bayes(my_dataset, all_features_test)
 
-# clf_decisionTree(my_dataset, selected_featureList)
+clf_decisionTree(my_dataset, selected_featureList)
+clf_decisionTree(my_dataset, all_features_test)
 
-# clf_KNeighbors(my_dataset, selected_featureList)
+clf_KNeighbors(my_dataset, selected_featureList)
+clf_KNeighbors(my_dataset, all_features_test)
 
 
 ### Task 5: Tune your classifier to achieve better than .3 precision and recall 

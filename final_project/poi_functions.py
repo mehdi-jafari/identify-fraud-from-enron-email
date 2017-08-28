@@ -98,17 +98,14 @@ def createNewFeatures(data_dict, feature_combination):
 
 	return data_dict
 
-def remove_low_variant_features(labels, features, features_list):
+def remove_low_variant_features(labels, features, features_list , k):
 
 	from sklearn.feature_selection import VarianceThreshold, f_classif, SelectKBest
 	threshold = .8 * (1 - .8)
 	vt = VarianceThreshold(threshold=threshold)
 	features = vt.fit_transform(features)
-
-	#print vt.variances_
 	
-	k = 10
-	vt = SelectKBest(f_classif, k=10)
+	vt = SelectKBest(f_classif, k=k)
 	vt.fit_transform(features, labels)
 	
 	scores = zip(features_list[1:],vt.scores_)
@@ -125,14 +122,14 @@ def clf_naive_bayes(dataset, features_list):
 	from sklearn.naive_bayes import GaussianNB
 	clf = GaussianNB()
 	test_classifier(clf, dataset, features_list, folds = 1000)
-	print '****************************************naive_bayes***************************'
+	print '****************************************END naive_bayes***************************'
 	
 def clf_decisionTree(dataset, features_list):
 	print '****************************************START decisionTree***************************'
 	from sklearn import tree
 	clf = tree.DecisionTreeClassifier()
 	test_classifier(clf, dataset, features_list, folds = 1000)	
-	print '****************************************decisionTree***************************'
+	print '****************************************END decisionTree***************************'
 
 def clf_KNeighbors(dataset, features_list):
 	print '****************************************START KNeighbors***************************'
@@ -141,7 +138,7 @@ def clf_KNeighbors(dataset, features_list):
 	clf = KNeighborsClassifier()
 	test_classifier(clf, dataset, features_list, folds = 1000)
 
-	print '****************************************KNeighbors***************************'
+	print '****************************************END KNeighbors***************************'
 
 
 def clf_best_params_KNeighbors(dataset, features_list):
