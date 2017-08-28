@@ -52,7 +52,7 @@ I found and removed the following outliers from Enron dataset via plotting the d
 * from_poi_to_this_person_ratio
 * bonus_ratio
 
-I used SelectKBest algorithm to score the features and select the top 10 features to try classification.
+I used SelectKBest algorithm to score the features and select the top 6 features to try classification according to the follwoing plot we have the almost the best precision and Recall when we choose 6 as K.
 
 | FeatureName                       | Score               |
     | -------------                 | -------------       |
@@ -81,6 +81,8 @@ I used SelectKBest algorithm to score the features and select the top 10 feature
 
  Here are the selected features:
 ['exercised_stock_options', 'total_stock_value', 'bonus', 'bonus_ratio', 'salary', 'deferred_income', 'long_term_incentive', 'restricted_stock', 'total_payments', 'shared_receipt_with_poi', 'poi']
+
+![number of K-Best Features plot ](figure_1.png)
 
 As we can see in the list only one of the three engnineerd features (bonus_ratio) is in the top 10 list.
 
