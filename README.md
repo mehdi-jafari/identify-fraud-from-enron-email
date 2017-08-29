@@ -115,8 +115,8 @@ Machine learning algorithms require you to set parameters before you use the mod
 
 | Classification| time*| Accuracy | Precision | Recall  | F1     | Best parameters|
 | ------------- | -------| ---------| --------- | ------- | ------- |-------         |
-| Decision Tree | 0.80773| 0.84913  | 0.32301   | 0.12000 | 0.17499 |{'min_samples_split': 10, 'max_depth': 2} |
-| K-Neighbors   | 2865|  0.86607 | 0.15385   | 0.00100 | 0.00199 |{'knn__algorithm': 'ball_tree', 'knn__weights': 'uniform', 'knn__metric': 'minkowski', 'knn__n_neighbors': 6}         |
+| Decision Tree | 98| 0.82114  | 0.31250   | 0.21000 | 0.25120 |{'min_samples_split': 10, 'max_depth': 2} |
+| K-Neighbors   | 1784|  0.85207 | 0.26174   |0.01950 | 0.03630 |{'knn__algorithm': 'ball_tree', 'knn__weights': 'distance', 'knn__metric': 'manhattan', 'knn__n_neighbors': 9}         |
 
 
 *time : the time that is taken to find the best parameters.
