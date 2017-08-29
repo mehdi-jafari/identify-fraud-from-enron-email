@@ -15,29 +15,31 @@ The Enron dataset has 146 data points which 18 data points are Point of interest
 * email features: ['to_messages', 'email_address', 'from_poi_to_this_person', 'from_messages', 'from_this_person_to_poi', 'poi', 'shared_receipt_with_poi']
 
 The following table displays the number of NAN values in our dataset per feature. As we can see, POI feature has no missing value while some features like loan_advances, director_fees, restricted_stock_deferred, deferral_payments have more than 100 NAN values.
-| FeatureName               | Number of NAN values |
-    | -------------             | ------------- |
-    | salary                    | 51  |
-    | to_messages               | 60  |
-    | deferral_payments         | 107 |
-    | total_payments            | 21  |
-    | exercised_stock_options   | 44  |
-    | bonus                     | 64  |
-    | director_fees             | 129 |
-    | restricted_stock_deferred | 128 |
-    | from_messages             | 60  |
-    | total_stock_value         | 20  |
-    | expenses                  | 51  |
-    | from_poi_to_this_person   | 60  |
-    | loan_advances             | 142 |
-    | email_address             | 35  |
-    | other                     | 53  |
-    | from_this_person_to_poi   | 60  |
-    | poi                       | 0   |
-    | deferred_income           | 97  |
-    | shared_receipt_with_poi   | 60  |
-    | restricted_stock          | 36  |
-    | long_term_incentive       | 80  |
+
+
+| FeatureName| Number of NAN values |
+| ------------- | ---------|
+| salary                    | 51  |
+| to_messages               | 60  |
+| deferral_payments         | 107 |
+| total_payments            | 21  |
+| exercised_stock_options   | 44  |
+| bonus                     | 64  |
+| director_fees             | 129 |
+| restricted_stock_deferred | 128 |
+| from_messages             | 60  |
+| total_stock_value         | 20  |
+| expenses                  | 51  |
+| from_poi_to_this_person   | 60  |
+| loan_advances             | 142 |
+| email_address             | 35  |
+| other                     | 53  |
+| from_this_person_to_poi   | 60  |
+| poi                       | 0   |
+| deferred_income           | 97  |
+| shared_receipt_with_poi   | 60  |
+| restricted_stock          | 36  |
+| long_term_incentive       | 80  |
 
 I found and removed the following outliers from Enron dataset via plotting the data, finding data points with so many missing values or finding endpoint with strange values:
 
