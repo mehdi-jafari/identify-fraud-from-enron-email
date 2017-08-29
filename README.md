@@ -53,6 +53,8 @@ I found and removed the following outliers from Enron dataset via plotting the d
 
 I used SelectKBest algorithm to score the features here is the result of scoring:
 
+
+
 | FeatureName                   | Score               |
     | -------------                 | -------------       |
     | exercised_stock_options       | 24.815079733218194  |
