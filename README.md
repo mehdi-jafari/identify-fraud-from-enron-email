@@ -15,9 +15,7 @@ The Enron dataset has 146 data points which 18 data points are Point of interest
 * email features: ['to_messages', 'email_address', 'from_poi_to_this_person', 'from_messages', 'from_this_person_to_poi', 'poi', 'shared_receipt_with_poi']
 
 The following table displays the number of NAN values in our dataset per feature. As we can see, POI feature has no missing value while some features like loan_advances, director_fees, restricted_stock_deferred, deferral_payments have more than 100 NAN values.
-
-
-    | FeatureName               | Number of NAN values |
+| FeatureName               | Number of NAN values |
     | -------------             | ------------- |
     | salary                    | 51  |
     | to_messages               | 60  |
@@ -54,8 +52,7 @@ I found and removed the following outliers from Enron dataset via plotting the d
 * bonus_ratio
 
 I used SelectKBest algorithm to score the features here is the result of scoring:
-
-    | FeatureName                   | Score               |
+| FeatureName                   | Score               |
     | -------------                 | -------------       |
     | exercised_stock_options       | 24.815079733218194  |
     | total_stock_value             | 24.182898678566879  |
@@ -116,6 +113,8 @@ Machine learning algorithms require you to set parameters before you use the mod
 | ------------- | -------| ---------| --------- | ------- | ------- |-------         |
 | Decision Tree | 0.80773| 0.84913  | 0.32301   | 0.12000 | 0.17499 |{'min_samples_split': 10, 'max_depth': 2} |
 | K-Neighbors   | 2865|  0.86607 | 0.15385   | 0.00100 | 0.00199 |{'knn__algorithm': 'ball_tree', 'knn__weights': 'uniform', 'knn__metric': 'minkowski', 'knn__n_neighbors': 6}         |
+
+
 *time : the time that is taken to find the best parameters.
 
 Since feature scaling does not affect decision tree, it wasn't applied to tune decision tree whereas in tuning KK I used StandardScaler is to preprocess the data.
