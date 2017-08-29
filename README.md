@@ -16,7 +16,8 @@ The Enron dataset has 146 data points which 18 data points are Point of interest
 
 The following table displays the number of NAN values in our dataset per feature. As we can see, POI feature has no missing value while some features like loan_advances, director_fees, restricted_stock_deferred, deferral_payments have more than 100 NAN values.
 
-| FeatureName               | Number of NAN values |
+
+    | FeatureName               | Number of NAN values |
     | -------------             | ------------- |
     | salary                    | 51  |
     | to_messages               | 60  |
@@ -54,7 +55,7 @@ I found and removed the following outliers from Enron dataset via plotting the d
 
 I used SelectKBest algorithm to score the features here is the result of scoring:
 
-| FeatureName                       | Score               |
+    | FeatureName                   | Score               |
     | -------------                 | -------------       |
     | exercised_stock_options       | 24.815079733218194  |
     | total_stock_value             | 24.182898678566879  |
@@ -110,6 +111,7 @@ As we can see in the table above, Naive bays has the best performance among thes
 Machine learning algorithms require you to set parameters before you use the models. In other words, Machine learning algorithms are parametrized and setting those parameters depend on many factors. The goal is to set those parameters to so optimal values that gives you the best performance in terms of accuracy, precision and recall. Setting those parameters could drive to overfitting which is a common phenomenon in machine learning that we must be aware of to limit and constrain how much detail the model learns once we train the model.
 
  I used GridSearchCV to tune find the best result for DecisionTree and K- K-Neighbors algorithms by using different parameter. Here is what the best parameters and their performance:
+
 | Classification| time*| Accuracy | Precision | Recall  | F1     | Best parameters|
 | ------------- | -------| ---------| --------- | ------- | ------- |-------         |
 | Decision Tree | 0.80773| 0.84913  | 0.32301   | 0.12000 | 0.17499 |{'min_samples_split': 10, 'max_depth': 2} |
