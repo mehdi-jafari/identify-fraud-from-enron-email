@@ -61,9 +61,9 @@ data_dict.pop( 'THE TRAVEL AGENCY IN THE PARK', 0 )
 #printOutliers(data_dict,"total_stock_value",1)
 #data_dict.pop( 'LAY KENNETH L', 0 )
 
-# scatterPlot(data_dict, ['total_payments', 'total_stock_value'] , " total_payments and total_stock_value")
-# scatterPlot(data_dict, ['from_poi_to_this_person', 'from_this_person_to_poi'] , " from_poi_to_this_person and from_this_person_to_poi")
-# scatterPlot(data_dict, ['salary', 'bonus'] ," salary and bonus" )
+scatterPlot(data_dict, ['total_payments', 'total_stock_value'] , " total_payments and total_stock_value")
+scatterPlot(data_dict, ['from_poi_to_this_person', 'from_this_person_to_poi'] , " from_poi_to_this_person and from_this_person_to_poi")
+scatterPlot(data_dict, ['salary', 'bonus'] ," salary and bonus" )
 
 # end Finding with plotting
 
@@ -88,8 +88,7 @@ labels, features = targetFeatureSplit(data)
 
 find_the_best_k_number_of_features(my_dataset, labels, features, features_list)
 
-# selected_featureList = ['poi'] + remove_low_variant_features(labels, features, features_list, 5)
-# clf_naive_bayes(my_dataset, selected_featureList)
+selected_featureList = ['poi'] + remove_low_variant_features(labels, features, features_list, 6)
 
 # selected_featureList = ['poi'] + remove_low_variant_features(labels, features, features_list, 6)
 # clf_naive_bayes(my_dataset, selected_featureList)
@@ -100,14 +99,14 @@ find_the_best_k_number_of_features(my_dataset, labels, features, features_list)
 ### http://scikit-learn.org/stable/modules/pipeline.html
 
 # Provided to give you a starting point. Try a variety of classifiers.
-# clf_naive_bayes(my_dataset, selected_featureList)
-# clf_naive_bayes(my_dataset, all_features_test)
+clf_naive_bayes(my_dataset, selected_featureList)
+clf_naive_bayes(my_dataset, all_features_test)
 
-# clf_decisionTree(my_dataset, selected_featureList)
-# clf_decisionTree(my_dataset, all_features_test)
+clf_decisionTree(my_dataset, selected_featureList)
+clf_decisionTree(my_dataset, all_features_test)
 
-# clf_KNeighbors(my_dataset, selected_featureList)
-# clf_KNeighbors(my_dataset, all_features_test)
+clf_KNeighbors(my_dataset, selected_featureList)
+clf_KNeighbors(my_dataset, all_features_test)
 
 
 ### Task 5: Tune your classifier to achieve better than .3 precision and recall 
@@ -118,8 +117,8 @@ find_the_best_k_number_of_features(my_dataset, labels, features, features_list)
 ### http://scikit-learn.org/stable/modules/generated/sklearn.cross_validation.StratifiedShuffleSplit.html
 
 # clf_best_params_KNeighbors(my_dataset, features_list)
-# clf_best_params_KNeighbors(my_dataset, selected_featureList)
-# clf_best_params_DecisionTree(my_dataset, selected_featureList)
+clf_best_params_KNeighbors(my_dataset, selected_featureList)
+clf_best_params_DecisionTree(my_dataset, selected_featureList)
 
 
 from sklearn.naive_bayes import GaussianNB

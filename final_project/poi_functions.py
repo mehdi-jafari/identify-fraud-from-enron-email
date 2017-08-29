@@ -129,82 +129,10 @@ def find_the_best_k_number_of_features(dataset, labels, features, features_list)
 	x_r, y_r = zip(*recall_lists) # unpack a list of pairs into two tuples
 	plt.plot(x_r, y_r)
 	plt.legend(['Accuracy', 'Precision', 'Recall'], loc='upper left')
+	plt.title('Accuracy, Precision, and Recall versus number of K-best Features')
+	plt.xlabel('Score')
+	plt.ylabel('Number of K best features')
 	plt.show()
-	print 'ggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg'
-	print result_accuracy
-	print 'ggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg'
-
-		
-
-	# result = {}
-	# folds= 1000
-	# from sklearn.naive_bayes import GaussianNB
-	# from sklearn.cross_validation import StratifiedShuffleSplit
-	# print 'hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh'
-
-	# for k in xrange(5,10):
-	# 	print k
-	# 	# for feature in features_list_org:
-	# 	# 	# Replace 'NaN' with 0
-	# 	# 	for name in dataset:
-	# 	# 		data_point = dataset[name]
-	# 	# 	if not data_point[feature]:
-	# 	# 		data_point[feature] = 0
-	# 	# 	elif data_point[feature] == 'NaN':
-	# 	# 		data_point[feature] =0
-	# 	feature_list = []
-	# 	feature_list = remove_low_variant_features(labels, features, features_list_org , k)
-	# 	feature_list = ['poi'] + feature_list
-	# 	clf = GaussianNB()
-
-	# 	data = featureFormat(dataset, feature_list, sort_keys = True)
-	# 	labels, features = targetFeatureSplit(data)
-	# 	cv = StratifiedShuffleSplit(labels, folds, random_state = 42)
-	# 	true_negatives = 0
-	# 	false_negatives = 0
-	# 	true_positives = 0
-	# 	false_positives = 0
-	# 	for train_idx, test_idx in cv:
-	# 		features_train = []
-	# 		features_test  = []
-	# 		labels_train   = []
-	# 		labels_test    = []
-	# 		for ii in train_idx:
-	# 			features_train.append( features[ii] )
-	# 			labels_train.append( labels[ii] )
-	# 		for jj in test_idx:
-	# 			features_test.append( features[jj] )
-	# 			labels_test.append( labels[jj] )
-	# 		### fit the classifier using training set, and test on test set
-	#         clf.fit(features_train, labels_train)
-	#         predictions = clf.predict(features_test)
-	#         for prediction, truth in zip(predictions, labels_test):
-	#             if prediction == 0 and truth == 0:
-	#                 true_negatives += 1
-	#             elif prediction == 0 and truth == 1:
-	#                 false_negatives += 1
-	#             elif prediction == 1 and truth == 0:
-	#                 false_positives += 1
-	#             elif prediction == 1 and truth == 1:
-	#                 true_positives += 1
-	#             else:
-	#                 print "Warning: Found a predicted label not == 0 or 1."
-	#                 print "All predictions should take value 0 or 1."
-	#                 print "Evaluating performance for processed predictions:"
-	#                 break
-	# 	try:
-
-	# 		total_predictions = true_negatives + false_negatives + false_positives + true_positives
-	# 		accuracy = 1.0*(true_positives + true_negatives)/total_predictions
-	# 		precision = 1.0*true_positives/(true_positives+false_positives)
-	# 		recall = 1.0*true_positives/(true_positives+false_negatives)
-	# 		f1 = 2.0 * true_positives/(2*true_positives + false_positives+false_negatives)
-	# 		f2 = (1+2.0*2.0) * precision*recall/(4*precision + recall)
-	# 		result[k] = total_predictions
-	# 	except:
-	# 		print "Got a divide by zero when trying out:", clf
-	# 		print "Precision or recall may be undefined due to a lack of true positive predicitons."
-	# print result
 
 def remove_low_variant_features(labels, features, features_list , k):
 
@@ -250,9 +178,7 @@ def clf_KNeighbors(dataset, features_list):
 
 
 def clf_best_params_KNeighbors(dataset, features_list):
-	print '****************************************START Tunned KNeighbors***************************'
-	
-	# based on grid search n_neighbors =1 and  algorithm='ball_tree' gives the best result
+	print '****************************************START Tunned KNeighbors***************************'	
 	from sklearn.grid_search import GridSearchCV
 	from sklearn import neighbors
 	from sklearn.pipeline import Pipeline
@@ -260,16 +186,13 @@ def clf_best_params_KNeighbors(dataset, features_list):
 	from sklearn import cross_validation
 	from time import time
 
-	startTime	  = time()
-	y       	  = np.sign(np.arange(-5.5,14))
-	nFolds 		  = 4
+	startTime	  = time()	
 	metrics       = ['minkowski','euclidean','manhattan'] 
 	weights       = ['uniform','distance']
 	numNeighbors  = np.arange(6,10)
 	algorithms 	  = ['ball_tree','kd_tree','brute','auto']
-	param_grid    = dict(knn__metric=metrics,knn__weights=weights,knn__n_neighbors=numNeighbors, knn__algorithm=algorithms)
-	cv           = cross_validation.StratifiedKFold(y,nFolds)
-	grid = GridSearchCV(Pipeline([('scale', StandardScaler()), ('knn', neighbors.KNeighborsClassifier())]), param_grid=param_grid, scoring='recall', cv=cv)
+	param_grid    = dict(knn__metric=metrics,knn__weights=weights,knn__n_neighbors=numNeighbors, knn__algorithm=algorithms)	
+	grid = GridSearchCV(Pipeline([('scale', StandardScaler()), ('knn', neighbors.KNeighborsClassifier())]), param_grid=param_grid, scoring='recall')
 
 	test_classifier(grid, dataset, features_list)
 	print 'Tuning of KNN parameters took {} seconds with these parameters {} '.format(round(time()-startTime, 3), grid.best_params_)
@@ -277,25 +200,20 @@ def clf_best_params_KNeighbors(dataset, features_list):
 	print '****************************************END Tunned KNeighbors***************************'
 
 def clf_best_params_DecisionTree(dataset, features_list):
-	print '****************************************START Tunned DecisionTree***************************'
-	
-	# based on grid search n_neighbors =1 and  algorithm='ball_tree' gives the best result
+	print '****************************************START Tunned DecisionTree***************************'	
 	from sklearn.grid_search import GridSearchCV
 	from sklearn import tree
 	from time import time
 	from sklearn import cross_validation
 
-	startTime	 = time()
-	y       	 = np.sign(np.arange(-5.5,14))
-	nFolds 		 = 4
+	startTime	 = time()	
 	criterions   = ['gini', 'entropy'] 
 	splitters    = ['best','random']
 	n_estimators = [50, 100, 150, 200]
 	max_depths 	 = [2, 4, 6, 8]
 	min_splits   = [10, 20, 40]
-	param_grid   = dict(max_depth = max_depths, min_samples_split = min_splits)
-	cv           = cross_validation.StratifiedKFold(y,nFolds)
-	grid 		 = GridSearchCV(tree.DecisionTreeClassifier(),param_grid=param_grid, scoring='recall', cv=cv)
+	param_grid   = dict(max_depth = max_depths, min_samples_split = min_splits)	
+	grid 		 = GridSearchCV(tree.DecisionTreeClassifier(),param_grid=param_grid, scoring='recall')
 
 	test_classifier(grid, dataset, features_list)
 	print 'Tuning of DecisionTree parameters took {} seconds with these parameters {}'.format(round(time()-startTime, 3), grid.best_params_)

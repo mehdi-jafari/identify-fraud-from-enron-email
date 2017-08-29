@@ -52,7 +52,7 @@ I found and removed the following outliers from Enron dataset via plotting the d
 * from_poi_to_this_person_ratio
 * bonus_ratio
 
-I used SelectKBest algorithm to score the features and select the top 6 features to try classification according to the follwoing plot we have the almost the best precision and Recall when we choose 6 as K.
+I used SelectKBest algorithm to score the features here is the result of scoring:
 
 | FeatureName                       | Score               |
     | -------------                 | -------------       |
@@ -79,11 +79,11 @@ I used SelectKBest algorithm to score the features and select the top 6 features
     | from_messages                 | 0.16970094762175533 |
     | restricted_stock_deferred     | 0.065499652909942141|
 
+In order to choose the best K value for feature selection, I created the following plot where precision and recall are presented for different values of k. the best result will be with K=6 that has the best possible precision and recall at the same time:
+
+![alt text](https://github.com/mehdi-jafari/identify-fraud-from-enron-email/blob/master/final_project/figure_1.png?raw=true "Accuracy, Precision, and Recall versus number of K-best Features")
  Here are the selected features:
-['exercised_stock_options', 'total_stock_value', 'bonus', 'bonus_ratio', 'salary', 'deferred_income', 'long_term_incentive', 'restricted_stock', 'total_payments', 'shared_receipt_with_poi', 'poi']
-
-![number of K-Best Features plot ](final_project\figure_1.png)
-
+['exercised_stock_options', 'total_stock_value', 'bonus', 'bonus_ratio', 'salary', 'deferred_income', 'poi']
 As we can see in the list only one of the three engnineerd features (bonus_ratio) is in the top 10 list.
 
 **3- What algorithm did you end up using? What other one(s) did you try? How did model performance differ between algorithms?  [relevant rubric item: “pick an algorithm”]**
@@ -91,37 +91,38 @@ I tried the following algorithms to compare their performances with the low vari
 
 | Classification| Accuracy | Precision | Recall  | F1      |
 | ------------- | ---------| --------- | ------- | ------- |
-|**Naïve Bayes**| 0.83613  | 0.36639   | 0.31400 | 0.33818 |
-| Decision Tree | 0.80773  | 0.28376   | 0.29000 | 0.28684 |
-| K-Neighbors   | 0.87640  | 0.63878   | 0.16800 | 0.26603 |
+|**Naïve Bayes**| 0.85464  | 0.48876   | 0.38050 | 0.42789 |
+| Decision Tree | 0.79907  | 0.30466   | 0.31700 | 0.31071 |
+| K-Neighbors   | 0.87657  | 0.68733   | 0.24950 | 0.36610 |
 
 In order to validate that the selected features have better performance than using all features, I tried the same algorithms with all features and here is the result:
 
 | Classification| Accuracy | Precision | Recall  | F1      |
 | ------------- | ---------| --------- | ------- | ------- |
 | Naïve Bayes   | 0.73900  | 0.22604   | 0.39500 | 0.28753 |
-| Decision Tree | 0.79633  | 0.22540   | 0.21650 | 0.22086 |
+| Decision Tree | 0.79427  | 0.22125   | 0.21550 | 0.21834 |
 | K-Neighbors   | 0.87920  | 0.65461   | 0.19900 | 0.30521 |
 
 As we can see in the table above, Naive bays has the best performance among these three algorithms with selected features.
 
 **4- What does it mean to tune the parameters of an algorithm, and what can happen if you don’t do this well?  How did you tune the parameters of your particular algorithm? What parameters did you tune? (Some algorithms do not have parameters that you need to tune -- if this is the case for the one you picked, identify and briefly explain how you would have done it for the model that was not your final choice or a different model that does utilize parameter tuning, e.g. a decision tree classifier).  [relevant rubric items: “discuss parameter tuning”, “tune the algorithm”]**
 
-Machine learning algorithms require you to set parameters before you use the models. In other words, Machine learning algorithms are parametrized and setting those parameters depend on many factors. The goal is to set those parameters to so optimal values that gives you the best performance in terms of accuracy, precision and recall.
-Setting those parameters could drive to overfitting which is a common phenomenon in machine learning that we have to be aware of every time we do machine learning.
+Machine learning algorithms require you to set parameters before you use the models. In other words, Machine learning algorithms are parametrized and setting those parameters depend on many factors. The goal is to set those parameters to so optimal values that gives you the best performance in terms of accuracy, precision and recall. Setting those parameters could drive to overfitting which is a common phenomenon in machine learning that we must be aware of to limit and constrain how much detail the model learns once we train the model.
 
- I used GridSearchCV to tune find the best result for DecisionTree and K-Nieghbors algorithms by using different parameter. Here is what the best parameters and their performance:
+ I used GridSearchCV to tune find the best result for DecisionTree and K- K-Neighbors algorithms by using different parameter. Here is what the best parameters and their performance:
 | Classification| time*| Accuracy | Precision | Recall  | F1     | Best parameters|
 | ------------- | -------| ---------| --------- | ------- | ------- |-------         |
 | Decision Tree | 0.80773| 0.84913  | 0.32301   | 0.12000 | 0.17499 |{'min_samples_split': 10, 'max_depth': 2} |
 | K-Neighbors   | 2865|  0.86607 | 0.15385   | 0.00100 | 0.00199 |{'knn__algorithm': 'ball_tree', 'knn__weights': 'uniform', 'knn__metric': 'minkowski', 'knn__n_neighbors': 6}         |
 *time : the time that is taken to find the best parameters.
 
+Since feature scaling does not affect decision tree, it wasn't applied to tune decision tree whereas in tuning KK I used StandardScaler is to preprocess the data.
+
 The algorithm that has the best performance is Naïve Bayes.
 
 **5- What is validation, and what’s a classic mistake you can make if you do it wrong? How did you validate your analysis?  [relevant rubric items: “discuss validation”, “validation strategy”]**
-Validation is the process that we should use to get an assessment of the performance of our classifier or our regression on an independent dataset and helps us to prevent overfitting. A classic mistake of validation is doing validation without shuffling.
-I used cross_validation.StratifiedKFold to validate the result where it searches for the best parameters for DecisionTree and K-Nieghbors algorithms.
+Validation is the process that we should use to get an assessment of the performance of our classifier or our regression on an independent dataset and helps us to prevent overfitting. A classic mistake of validation is doing validation without shuffling. Since In this project we are dealing with a small and imbalanced dataset I use StratifiedShuffleSplit.
+
 
 **6- Give at least 2 evaluation metrics and your average performance for each of them.  Explain an interpretation of your metrics that says something human-understandable about your algorithm’s performance. [relevant rubric item: “usage of evaluation metrics”]**
 
