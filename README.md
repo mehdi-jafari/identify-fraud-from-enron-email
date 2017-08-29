@@ -55,9 +55,8 @@ I used SelectKBest algorithm to score the features here is the result of scoring
 
 
 
-   | FeatureName                   | Score               |
-    | -------------                 | -------------       |
-    | exercised_stock_options       | 24.815079733218194  |
+| FeatureName| Score |
+| ------------- | ---------|
     | total_stock_value             | 24.182898678566879  |
     | bonus                         | 20.792252047181535  |
     | bonus_ratio                   | 20.715596247559954  |
