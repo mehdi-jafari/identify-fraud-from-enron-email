@@ -61,23 +61,23 @@ I used SelectKBest algorithm to score the features here is the result of scoring
 | bonus                         | 20.792252047181535  |
 | bonus_ratio                   | 20.715596247559954  |
 | salary                        | 18.289684043404513  |
-    | deferred_income               | 11.458476579280369  |
-    | long_term_incentive           | 9.9221860131898225  |
-    | restricted_stock              | 9.2128106219771002  |
-    | total_payments                | 8.7727777300916756  |
-    | shared_receipt_with_poi       | 8.589420731682381   |
-    | loan_advances                 | 7.1840556582887247  |
-    | expenses                      | 6.0941733106389453  |
-    | from_poi_to_this_person       | 5.2434497133749582  |
-    | other                         | 4.1874775069953749  |
-    | from_this_person_to_poi       | 2.3826121082276739  |
-    | director_fees                 | 2.1263278020077054  |
-    | to_messages                   | 1.6463411294420076  |
-    | from_this_person_to_poi_ratio | 1.2565738314129471  |
-    | from_poi_to_this_person_ratio | 0.23029068522964966 |
-    | deferral_payments             | 0.22461127473600989 |
-    | from_messages                 | 0.16970094762175533 |
-    | restricted_stock_deferred     | 0.065499652909942141|
+| deferred_income               | 11.458476579280369  |
+| long_term_incentive           | 9.9221860131898225  |
+| restricted_stock              | 9.2128106219771002  |
+| total_payments                | 8.7727777300916756  |
+| shared_receipt_with_poi       | 8.589420731682381   |
+| loan_advances                 | 7.1840556582887247  |
+| expenses                      | 6.0941733106389453  |
+| from_poi_to_this_person       | 5.2434497133749582  |
+| other                         | 4.1874775069953749  |
+| from_this_person_to_poi       | 2.3826121082276739  |
+| director_fees                 | 2.1263278020077054  |
+| to_messages                   | 1.6463411294420076  |
+| from_this_person_to_poi_ratio | 1.2565738314129471  |
+| from_poi_to_this_person_ratio | 0.23029068522964966 |
+| deferral_payments             | 0.22461127473600989 |
+| from_messages                 | 0.16970094762175533 |
+| restricted_stock_deferred     | 0.065499652909942141|
 
 In order to choose the best K value for feature selection, I created the following plot where precision and recall are presented for different values of k. the best result will be with K=6 that has the best possible precision and recall at the same time:
 
