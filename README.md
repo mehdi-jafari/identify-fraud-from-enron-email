@@ -57,10 +57,10 @@ I used SelectKBest algorithm to score the features here is the result of scoring
 
 | FeatureName| Score |
 | ------------- | ---------|
-    | total_stock_value             | 24.182898678566879  |
-    | bonus                         | 20.792252047181535  |
-    | bonus_ratio                   | 20.715596247559954  |
-    | salary                        | 18.289684043404513  |
+| total_stock_value             | 24.182898678566879  |
+| bonus                         | 20.792252047181535  |
+| bonus_ratio                   | 20.715596247559954  |
+| salary                        | 18.289684043404513  |
     | deferred_income               | 11.458476579280369  |
     | long_term_incentive           | 9.9221860131898225  |
     | restricted_stock              | 9.2128106219771002  |
